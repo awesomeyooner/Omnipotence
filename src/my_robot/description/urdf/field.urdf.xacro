@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="field" params="prefix">
+
+    <xacro:property name="width" value="17.5482493332"/>
+    <xacro:property name="height" value="8.0518"/>
+
+    <!-- Base Link -->
+    <link name="${prefix}world_link"/>
+
+    <!-- Chassis -->
+    <link name="${prefix}field_link">
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 ${PI/2}"/>
+        <geometry>
+          <mesh filename="file://$(find my_robot)/description/urdf/assets/REEFSCAPE-FIELD-2025.stl"/>
+        </geometry>
+      </collision>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 ${PI/2}"/>
+        <geometry>
+          <mesh filename="file://$(find my_robot)/description/urdf/assets/REEFSCAPE-FIELD-2025.dae"/>
+        </geometry>
+
+        <material name="grey"/>
+      </visual>
+
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${base_mass}"/>
+          <inertia
+            ixx="0.000270" ixy="0.0" ixz="0.0"
+            iyy="0.000270" iyz="0.0"
+            izz="0.000426"/>
+        </inertial>
+    </link>
+
+      <joint name="${prefix}field_joint" type="fixed">
+        <parent link="${prefix}world_link"/>
+        <child link="${prefix}field_link"/>
+        <origin xyz="${-8.0518 / 2} ${17.5482493332 / 2} 0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+        <dynamics damping="${damping}"/>
+      </joint>
+
+      <!-- ==================================================================== -->
+
+  </xacro:macro>
+
+</robot>
