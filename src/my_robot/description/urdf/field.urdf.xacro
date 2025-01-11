@@ -6,10 +6,10 @@
     <xacro:property name="width" value="17.5482493332"/>
     <xacro:property name="height" value="8.0518"/>
 
-    <!-- Base Link -->
+    <!-- World Link -->
     <link name="${prefix}world_link"/>
 
-    <!-- Chassis -->
+    <!-- Field Link -->
     <link name="${prefix}field_link">
       <collision>
         <origin xyz="0 0 0" rpy="0 0 ${PI/2}"/>
@@ -38,9 +38,11 @@
     </link>
 
       <joint name="${prefix}field_joint" type="fixed">
+
         <parent link="${prefix}world_link"/>
         <child link="${prefix}field_link"/>
-        <origin xyz="${-8.0518 / 2} ${17.5482493332 / 2} 0" rpy="0 0 0"/>
+
+        <origin xyz="${-height / 2} ${width / 2} 0" rpy="0 0 0"/>
         <axis xyz="0 0 1"/>
         <dynamics damping="${damping}"/>
       </joint>
