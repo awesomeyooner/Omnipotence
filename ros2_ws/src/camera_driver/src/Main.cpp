@@ -37,7 +37,7 @@ class CameraDriverNode : public rclcpp::Node {
             image_height = this->get_parameter("image_height").as_int();
             image_fps = this->get_parameter("image_fps").as_int();
 
-            camera = CameraManager(camera_index);
+            camera = CameraManager(camera_index, cv::CAP_V4L2);
 
             if(image_width != -1 && image_height != -1 && image_fps != -1)
                 camera.config(image_width, image_height, image_fps);
@@ -74,28 +74,32 @@ class CameraDriverNode : public rclcpp::Node {
 
             int repeat = 5;
 
-            for(int i = 0; i < repeat; i++){
-                bool status = camera.setProperty(cv::CAP_PROP_FRAME_WIDTH, image_width, false);
+            if(image_width != -1){
+                for(int i = 0; i < repeat; i++){
+                    bool status = camera.setProperty(cv::CAP_PROP_FRAME_WIDTH, image_width, false);
 
-                if(status){ //if okay
-                    RCLCPP_INFO(this->get_logger(), "Successfully Configured: WIDTH");
-                    break;
+                    if(status){ //if okay
+                        RCLCPP_INFO(this->get_logger(), "Successfully Configured: WIDTH");
+                        break;
+                    }
+
+                    if(!status && i == repeat - 1) //if it failed and its at the end
+                        all_successful = false;
                 }
-
-                if(!status && i == repeat - 1) //if it failed and its at the end
-                    all_successful = false;
             }
 
-            for(int i = 0; i < repeat; i++){
-                bool status = camera.setProperty(cv::CAP_PROP_FRAME_HEIGHT, image_height, false);
+            if(image_height != -1){
+                for(int i = 0; i < repeat; i++){
+                    bool status = camera.setProperty(cv::CAP_PROP_FRAME_HEIGHT, image_height, false);
 
-                if(status){ //if okay
-                    RCLCPP_INFO(this->get_logger(), "Successfully Configured: HEIGHT");
-                    break;
+                    if(status){ //if okay
+                        RCLCPP_INFO(this->get_logger(), "Successfully Configured: HEIGHT");
+                        break;
+                    }
+
+                    if(!status && i == repeat - 1) //if it failed and its at the end
+                        all_successful = false;
                 }
-
-                if(!status && i == repeat - 1) //if it failed and its at the end
-                    all_successful = false;
             }
             
             for(int i = 0; i < repeat; i++){
@@ -110,16 +114,18 @@ class CameraDriverNode : public rclcpp::Node {
                     all_successful = false;
             }
 
-            for(int i = 0; i < repeat; i++){
-                bool status = camera.setProperty(cv::CAP_PROP_FPS, image_fps, false);
+            if(image_fps != -1){
+                for(int i = 0; i < repeat; i++){
+                    bool status = camera.setProperty(cv::CAP_PROP_FPS, image_fps, false);
 
-                if(status){ //if okay
-                    RCLCPP_INFO(this->get_logger(), "Successfully Configured: FPS");
-                    break;
+                    if(status){ //if okay
+                        RCLCPP_INFO(this->get_logger(), "Successfully Configured: FPS");
+                        break;
+                    }
+
+                    if(!status && i == repeat - 1) //if it failed and its at the end
+                        all_successful = false;
                 }
-
-                if(!status && i == repeat - 1) //if it failed and its at the end
-                    all_successful = false;
             }
 
             RCLCPP_INFO(this->get_logger(), "Configuration Status: %s", all_successful ? "success" : "failed");
