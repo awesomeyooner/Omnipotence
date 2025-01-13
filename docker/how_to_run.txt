@@ -7,3 +7,6 @@ In order for it all to work, you need 4 terminals:
     4. ros1 container running whatever nodes and stuff
 
 Terminals 1 and 2 are for the bridge, 3 and 4 are for your application.
+
+To fake a subscriber for a topic that originates from ROS 1, 
+ros2 topic echo <topic-name> <topic-type>
