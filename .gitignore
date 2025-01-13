@@ -1,11 +1,11 @@
 #ignore build folder
-build/
+ros2_ws/build/
 
 #ignore install folder
-install/
+ros2_ws/install/
 
 #ignore log folder
-log/
+ros2_ws/log/
 
 **/__pycache__/
 
