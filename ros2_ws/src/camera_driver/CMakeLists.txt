@@ -16,8 +16,20 @@ find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+
+rosidl_generate_interfaces(${PROJECT_NAME}  
+  "srv/ConfigureCamera.srv"
+  "srv/ReconfigureDefaults.srv"
+  DEPENDENCIES std_msgs
+)
+
+ament_export_dependencies(rosidl_default_runtime)
 
 include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_cpp>
+  $<INSTALL_INTERFACE:include>
   include
   ${OpenCV_INCLUDE_DIRS}
 )
@@ -28,6 +40,8 @@ include_directories(
 
 add_executable(camera_driver_node src/Main.cpp)
 ament_target_dependencies(camera_driver_node rclcpp std_msgs cv_bridge)
+
+rosidl_target_interfaces(camera_driver_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 target_link_libraries(camera_driver_node ${OpenCV_LIBS})
 

@@ -1,0 +1,9 @@
+To see IO
+v4l2-ctl -d /dev/video0 --list-formats-ext
+
+List services:
+ros2 service list
+
+To send values to service (make sure to source this ws tho)
+ros2 service call /camera/configure_camera camera_driver/srv/ConfigureCamera "{width: 320, height: 240, fps: 30}"
+ros2 service call /camera/reconfigure_defaults camera_driver/srv/ReconfigureDefaults "{}"
