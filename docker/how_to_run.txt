@@ -1,0 +1,9 @@
+In order for it all to work, you need 4 terminals:
+    1. ros_bridge docker running rosbridge with 
+        ros2 run ros1_bridge dynamic_bridge
+    2. ros1 docker running roscore
+        roscore
+    3. ros2 container running whatever nodes and stuff
+    4. ros1 container running whatever nodes and stuff
+
+Terminals 1 and 2 are for the bridge, 3 and 4 are for your application.
