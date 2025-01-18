@@ -63,137 +63,90 @@ class CameraDriverNode : public rclcpp::Node {
         }
 
     private:
-        void handle_reconfig(const std::shared_ptr<camera_driver::srv::ReconfigureDefaults::Request> request, 
-            std::shared_ptr<camera_driver::srv::ReconfigureDefaults::Response> response){
+    /**
+     * Sets property of camera. False means fail.
+     */
+        bool set_camera_property_ack(cv::VideoCaptureProperties property, double value, int repeat){
+            for(int i = 0; i < repeat; i++){
+                bool status = camera.setProperty(property, value, false);
 
-            RCLCPP_INFO(this->get_logger(), "Received Reconfigure Request: width=%d, height=%d, fps=%d",
-                image_width, image_height, image_fps
+                if(status){
+                    std::string message = "Successfully Configured: ";
+
+                    switch(property){
+                        case cv::CAP_PROP_FRAME_WIDTH:
+                            message += "WIDTH";
+                            break;
+
+                        case cv::CAP_PROP_FRAME_HEIGHT:
+                            message += "HEIGHT";
+                            break;
+
+                        case cv::CAP_PROP_FPS:
+                            message += "FPS";
+                            break;
+
+                        case cv::CAP_PROP_FOURCC:
+                            message += "FOURCC";
+                            break;
+                    }
+                    RCLCPP_INFO(this->get_logger(), message.c_str());
+
+                    if(status)
+                        return true;
+                }
+
+                return false;
+            }
+        }
+
+        bool config_camera(double width, double height, double fourcc, double fps, int repeat){
+
+            RCLCPP_INFO(this->get_logger(), "Configuring with Values: width=%d, height=%d, fourcc=%d fps=%d",
+                (int)width, (int)height, (int)fourcc, (int)fps
             );
 
             bool all_successful = true;
 
-            int repeat = 5;
+            if(!set_camera_property_ack(cv::CAP_PROP_FRAME_WIDTH, width, repeat))
+                all_successful = false;
 
-            if(image_width != -1){
-                for(int i = 0; i < repeat; i++){
-                    bool status = camera.setProperty(cv::CAP_PROP_FRAME_WIDTH, image_width, false);
-
-                    if(status){ //if okay
-                        RCLCPP_INFO(this->get_logger(), "Successfully Configured: WIDTH");
-                        break;
-                    }
-
-                    if(!status && i == repeat - 1) //if it failed and its at the end
-                        all_successful = false;
-                }
-            }
-
-            if(image_height != -1){
-                for(int i = 0; i < repeat; i++){
-                    bool status = camera.setProperty(cv::CAP_PROP_FRAME_HEIGHT, image_height, false);
-
-                    if(status){ //if okay
-                        RCLCPP_INFO(this->get_logger(), "Successfully Configured: HEIGHT");
-                        break;
-                    }
-
-                    if(!status && i == repeat - 1) //if it failed and its at the end
-                        all_successful = false;
-                }
-            }
+            if(!set_camera_property_ack(cv::CAP_PROP_FRAME_HEIGHT, height, repeat))
+                all_successful = false;
             
-            for(int i = 0; i < repeat; i++){
-                bool status = camera.setProperty(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M','J','P','G'), false);
+            if(!set_camera_property_ack(cv::CAP_PROP_FOURCC, fourcc, repeat))
+                all_successful = false;
 
-                if(status){ //if okay
-                    RCLCPP_INFO(this->get_logger(), "Successfully Configured: FOURCC");
-                    break;
-                }
-
-                if(!status && i == repeat - 1) //if it failed and its at the end
-                    all_successful = false;
-            }
-
-            if(image_fps != -1){
-                for(int i = 0; i < repeat; i++){
-                    bool status = camera.setProperty(cv::CAP_PROP_FPS, image_fps, false);
-
-                    if(status){ //if okay
-                        RCLCPP_INFO(this->get_logger(), "Successfully Configured: FPS");
-                        break;
-                    }
-
-                    if(!status && i == repeat - 1) //if it failed and its at the end
-                        all_successful = false;
-                }
-            }
+            if(!set_camera_property_ack(cv::CAP_PROP_FPS, fps, repeat))
+                all_successful = false;
 
             RCLCPP_INFO(this->get_logger(), "Configuration Status: %s", all_successful ? "success" : "failed");
 
-            response->status = all_successful;
+            return all_successful;
+        }
 
+        void handle_reconfig(const std::shared_ptr<camera_driver::srv::ReconfigureDefaults::Request> request, 
+            std::shared_ptr<camera_driver::srv::ReconfigureDefaults::Response> response){
+
+            response->status = config_camera(
+                image_width,
+                image_height,
+                cv::VideoWriter::fourcc('M','J','P','G'),
+                image_fps,
+                5
+            );
         }
 
         void handle_config(const std::shared_ptr<camera_driver::srv::ConfigureCamera::Request> request, 
             std::shared_ptr<camera_driver::srv::ConfigureCamera::Response> response){
-            RCLCPP_INFO(this->get_logger(), "Received request: width=%d, height=%d, fps=%d",
-                    request->width, request->height, request->fps);
 
-            bool all_successful = true;
-
-            int repeat = 5;
-
-            for(int i = 0; i < repeat; i++){
-                bool status = camera.setProperty(cv::CAP_PROP_FRAME_WIDTH, request->width, false);
-
-                if(status){ //if okay
-                    RCLCPP_INFO(this->get_logger(), "Successfully Configured: WIDTH");
-                    break;
-                }
-
-                if(!status && i == repeat - 1) //if it failed and its at the end
-                    all_successful = false;
-            }
-
-            for(int i = 0; i < repeat; i++){
-                bool status = camera.setProperty(cv::CAP_PROP_FRAME_HEIGHT, request->height, false);
-
-                if(status){ //if okay
-                    RCLCPP_INFO(this->get_logger(), "Successfully Configured: HEIGHT");
-                    break;
-                }
-
-                if(!status && i == repeat - 1) //if it failed and its at the end
-                    all_successful = false;
-            }
-            
-            for(int i = 0; i < repeat; i++){
-                bool status = camera.setProperty(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M','J','P','G'), false);
-
-                if(status){ //if okay
-                    RCLCPP_INFO(this->get_logger(), "Successfully Configured: FOURCC");
-                    break;
-                }
-
-                if(!status && i == repeat - 1) //if it failed and its at the end
-                    all_successful = false;
-            }
-
-            for(int i = 0; i < repeat; i++){
-                bool status = camera.setProperty(cv::CAP_PROP_FPS, request->fps, false);
-
-                if(status){ //if okay
-                    RCLCPP_INFO(this->get_logger(), "Successfully Configured: FPS");
-                    break;
-                }
-
-                if(!status && i == repeat - 1) //if it failed and its at the end
-                    all_successful = false;
-            }
-
-            RCLCPP_INFO(this->get_logger(), "Configuration Status: %s", all_successful ? "success" : "failed");
-
-            response->status = all_successful;
+            response->status = config_camera(
+                request->width,
+                request->height,
+                cv::VideoWriter::fourcc('M','J','P','G'),
+                request->fps,
+                5
+            );
         }
 
         void publish_data(){
@@ -202,22 +155,20 @@ class CameraDriverNode : public rclcpp::Node {
             if(frame.empty())
                 return;
 
-            std::string encoding = publish_as_gray ? "mono8" : "bgr8";
-
-            cv_bridge::CvImage message = cv_bridge::CvImage(std_msgs::msg::Header(), encoding, frame);
-
             std_msgs::msg::Header header = std_msgs::msg::Header();
+                header.stamp = this->now();
+                header.frame_id = camera_frame_id; 
 
-            header.stamp = this->now();
-            header.frame_id = camera_frame_id; 
-
-            message.header = header;
+            cv_bridge::CvImage message = cv_bridge::CvImage(
+                header, 
+                publish_as_gray ? "mono8" : "bgr8", 
+                frame
+            );
 
             image_raw_publisher->publish(*message.toImageMsg());
 
-            if(publish_compressed){
+            if(publish_compressed)
                 image_compressed_publisher->publish(*message.toCompressedImageMsg(cv_bridge::Format::JPEG));
-            }
 
             if(publish_camera_info){
                 sensor_msgs::msg::CameraInfo info = sensor_msgs::msg::CameraInfo();
