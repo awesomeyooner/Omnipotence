@@ -50,6 +50,18 @@ class CameraManager{
             return getProperty(property, print) == value;
         }
 
+        bool setPropertyAck(cv::VideoCaptureProperties property, double value, int repeat){
+
+            for(int i = 0; i < repeat; i++){
+                bool status = setProperty(property, value, false);
+
+                if(status)
+                    return true;
+            }
+
+            return false;
+        }
+
         double getProperty(cv::VideoCaptureProperties property, bool print){
             double value = cap.get(property);
             

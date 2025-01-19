@@ -40,6 +40,7 @@ include_directories(
 
 add_executable(camera_driver_node src/Main.cpp)
 ament_target_dependencies(camera_driver_node rclcpp std_msgs cv_bridge)
+# target_include_directories(camera_driver_node PRIVATE ../../install)
 
 rosidl_target_interfaces(camera_driver_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 

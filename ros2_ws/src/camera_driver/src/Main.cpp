@@ -4,6 +4,8 @@
 #include <sensor_msgs/msg/camera_info.hpp>
 #include <cv_bridge/cv_bridge.h>
 #include <string>
+// #include "camera_driver/srv/configure_camera.hpp"
+// #include "camera_driver/srv/reconfigure_defaults.hpp"
 #include "../../../install/camera_driver/include/camera_driver/camera_driver/srv/configure_camera.hpp"
 #include "../../../install/camera_driver/include/camera_driver/camera_driver/srv/reconfigure_defaults.hpp"
 #include "../include/camera_driver/cameramanager/CameraManager.hpp"
@@ -67,37 +69,32 @@ class CameraDriverNode : public rclcpp::Node {
      * Sets property of camera. False means fail.
      */
         bool set_camera_property_ack(cv::VideoCaptureProperties property, double value, int repeat){
-            for(int i = 0; i < repeat; i++){
-                bool status = camera.setProperty(property, value, false);
+            
+            bool status = camera.setPropertyAck(property, value, repeat);
 
-                if(status){
-                    std::string message = "Successfully Configured: ";
+            std::string message = status ? "Successfully Configured: " : "Failed to Configure: ";
 
-                    switch(property){
-                        case cv::CAP_PROP_FRAME_WIDTH:
-                            message += "WIDTH";
-                            break;
+            switch(property){
+                case cv::CAP_PROP_FRAME_WIDTH:
+                    message += "WIDTH";
+                    break;
 
-                        case cv::CAP_PROP_FRAME_HEIGHT:
-                            message += "HEIGHT";
-                            break;
+                case cv::CAP_PROP_FRAME_HEIGHT:
+                    message += "HEIGHT";
+                    break;
 
-                        case cv::CAP_PROP_FPS:
-                            message += "FPS";
-                            break;
+                case cv::CAP_PROP_FPS:
+                    message += "FPS";
+                    break;
 
-                        case cv::CAP_PROP_FOURCC:
-                            message += "FOURCC";
-                            break;
-                    }
-                    RCLCPP_INFO(this->get_logger(), message.c_str());
-
-                    if(status)
-                        return true;
-                }
-
-                return false;
+                case cv::CAP_PROP_FOURCC:
+                    message += "FOURCC";
+                    break;
             }
+
+            RCLCPP_INFO(this->get_logger(), message.c_str());
+
+            return status;        
         }
 
         bool config_camera(double width, double height, double fourcc, double fps, int repeat){
