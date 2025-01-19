@@ -2,14 +2,13 @@ camera_driver_node:
   ros__parameters:
     camera_name: "camera"
     camera_frame_id: "camera_frame"
-    camera_index: 2
+    camera_index: 0
     publish_rate: 60.0 #hz
     publish_as_gray: false
     publish_compressed: true
     publish_camera_info: true
 
-    image_width: 320
-    image_height: 240
+    resolution: [1280, 960]
     image_fps: 30
 
     

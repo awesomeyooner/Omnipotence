@@ -23,9 +23,11 @@ class CameraDriverNode : public rclcpp::Node {
             this->declare_parameter<bool>("publish_compressed", true);
             this->declare_parameter<bool>("publish_camera_info", false);
 
-            this->declare_parameter<int>("image_width", -1);
-            this->declare_parameter<int>("image_height", -1);
+            this->declare_parameter<std::vector<int>>("resolution", {-1, -1});
             this->declare_parameter<int>("image_fps", -1);
+
+            this->declare_parameter<std::vector<double>>("intrinsics", {0, 0, 0, 0});
+            this->declare_parameter<std::vector<double>>("distortion_coeffs", {0, 0, 0, 0, 0});
 
             camera_name = this->get_parameter("camera_name").as_string();
             camera_frame_id = this->get_parameter("camera_frame_id").as_string();
@@ -35,14 +37,40 @@ class CameraDriverNode : public rclcpp::Node {
             publish_compressed = this->get_parameter("publish_compressed").as_bool();
             publish_camera_info = this->get_parameter("publish_camera_info").as_bool();
 
-            image_width = this->get_parameter("image_width").as_int();
-            image_height = this->get_parameter("image_height").as_int();
+            resolution = this->get_parameter("resolution").as_integer_array();
             image_fps = this->get_parameter("image_fps").as_int();
 
             camera = CameraManager(camera_index, cv::CAP_V4L2);
 
-            if(image_width != -1 && image_height != -1 && image_fps != -1)
-                camera.config(image_width, image_height, image_fps);
+            D = this->get_parameter("distortion_coeffs").as_double_array();
+
+            std::vector<double> intrinsics = this->get_parameter("intrinsics").as_double_array();
+
+            double fx = intrinsics[0];
+            double fy = intrinsics[1];
+            double cx = intrinsics[2];
+            double cy = intrinsics[3];
+            
+            K = {
+                fx, 0.0, cx,
+                0.0, fy, cy,
+                0.0, 0.0, 1.0
+            };
+
+            R = {
+                1.0, 0.0, 0.0,
+                0.0, 1.0, 0.0,
+                0.0, 0.0, 1.0
+            };
+
+            P = {
+                fx, 0.0, cx, 0.0,
+                0.0, fy, cy, 0.0,
+                0.0, 0.0, 1.0, 0.0
+            };
+
+            if(resolution[0] != -1 && resolution[1] != -1 && image_fps != -1)
+                camera.config(resolution[0], resolution[1], image_fps);
 
             image_raw_publisher = this->create_publisher<sensor_msgs::msg::Image>(camera_name + "/image_raw", 10);
             image_compressed_publisher = this->create_publisher<sensor_msgs::msg::CompressedImage>(camera_name + "/image_raw/compressed", 10);
@@ -126,11 +154,11 @@ class CameraDriverNode : public rclcpp::Node {
             std::shared_ptr<camera_driver::srv::ReconfigureDefaults::Response> response){
 
             response->status = config_camera(
-                image_width,
-                image_height,
+                resolution[0],
+                resolution[1],
                 cv::VideoWriter::fourcc('M','J','P','G'),
                 image_fps,
-                5
+                20
             );
         }
 
@@ -142,7 +170,7 @@ class CameraDriverNode : public rclcpp::Node {
                 request->height,
                 cv::VideoWriter::fourcc('M','J','P','G'),
                 request->fps,
-                5
+                20
             );
         }
 
@@ -176,6 +204,11 @@ class CameraDriverNode : public rclcpp::Node {
 
                 info.distortion_model = "plumb_bob";
 
+                info.k = K;
+                info.d = D;
+                info.r = R;
+                info.p = P;
+
                 camera_info_publisher->publish(info);
             }
         }
@@ -190,7 +223,6 @@ class CameraDriverNode : public rclcpp::Node {
         rclcpp::Service<camera_driver::srv::ConfigureCamera>::SharedPtr config_service;
         rclcpp::Service<camera_driver::srv::ReconfigureDefaults>::SharedPtr reconfig_service;
 
-
         std::string camera_name;
         std::string camera_frame_id;
         int camera_index;
@@ -199,10 +231,13 @@ class CameraDriverNode : public rclcpp::Node {
         bool publish_compressed;
         bool publish_camera_info;
 
-        int image_width;
-        int image_height;
+        std::vector<int64_t> resolution;
         int image_fps;
         
+        std::vector<double> D;
+        std::array<double, 9> K;
+        std::array<double, 9> R;
+        std::array<double, 12> P;
 };
 
 int main(int argc, char **argv){
