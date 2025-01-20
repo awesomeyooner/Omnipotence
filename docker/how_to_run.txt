@@ -10,3 +10,9 @@ Terminals 1 and 2 are for the bridge, 3 and 4 are for your application.
 
 To fake a subscriber for a topic that originates from ROS 1, 
 ros2 topic echo <topic-name> <topic-type>
+
+Running tagslam:
+go into workspace
+source devel/setup.bash
+roslaunch tagslam tagslam.launch
+
