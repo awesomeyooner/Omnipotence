@@ -20,7 +20,8 @@ RUN apt-get update && apt-get install -y \
     mesa-utils \
     libx11-dev \
     libxrender-dev \
-    libxtst-dev
+    libxtst-dev \
+    ros-humble-image-proc
 
 RUN apt install software-properties-common -y
 
