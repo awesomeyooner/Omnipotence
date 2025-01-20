@@ -29,8 +29,16 @@ CMD ["/bin/bash"]
 # Switch Users
 RUN useradd -ms /bin/bash dev \
     && echo "dev:nickreed" | chpasswd \
-    && usermod -aG sudo dev
+    && usermod -aG sudo dev \
+    && echo "dev ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER dev
 
 WORKDIR /home/dev
+
+RUN git clone https://awesomeyooner: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@github.com/awesomeyooner/Omnipotence.git
+RUN cd Omnipotence/ros_bridge && sudo chmod +x build.sh && ./build.sh
+
+WORKDIR /home/dev/Omnipotence/ros_bridge/bridge_ws
+
+ENTRYPOINT [ "source install/setup.bash" ]
