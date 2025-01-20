@@ -1,0 +1,4 @@
+apriltag_translator_node:
+  ros__parameters:
+    input_topic: "camera/detections"
+    output_topic: "camera/detections/translated"

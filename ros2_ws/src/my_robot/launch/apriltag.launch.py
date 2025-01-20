@@ -27,8 +27,15 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(os.path.join(get_package_share_directory(apriltag_package), "launch", "detector.launch.py"))
     )
 
+    apriltag_translator_package = "apriltag_translator"
+
+    apriltag_translator_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(get_package_share_directory(apriltag_translator_package), "launch", "apriltag_translator.launch.py"))
+    )
+
     return LaunchDescription([
         camera_driver_launch,
         image_proc_launch,
-        apriltag_detector_launch
+        apriltag_detector_launch,
+        apriltag_translator_launch
     ])
