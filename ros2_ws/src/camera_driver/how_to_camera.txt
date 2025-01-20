@@ -1,6 +1,11 @@
 To see IO
 v4l2-ctl -d /dev/video0 --list-formats-ext
 
+To see all cameras
+v4l2-ctl --list-devices
+
+ls -l /dev/v4l/by-id/
+
 List services:
 ros2 service list
 

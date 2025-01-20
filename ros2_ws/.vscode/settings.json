@@ -81,7 +81,7 @@
         "charconv": "cpp",
         "*.txx": "cpp"
     },
-    // "cmake.sourceDirectory": "/home/dev/Documents/GitHub/Omnipotence/ros2_ws/src/camera_driver_srvs",
+    //"cmake.sourceDirectory": "/home/dev/Documents/GitHub/Omnipotence/ros2_ws/src/camera_driver_srvs",
     "cmake.sourceDirectory": "/home/dev/Documents/GitHub/Omnipotence/ros2_ws/src/camera_driver",
     // "cmake.sourceDirectory": "/home/dev/Documents/GitHub/Omnipotence/ros2_ws/src/apriltag_translator",
     // "C_Cpp.default.compilerPath": "/usr/bin/gcc"

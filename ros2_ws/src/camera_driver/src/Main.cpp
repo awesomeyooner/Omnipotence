@@ -15,6 +15,7 @@ class CameraDriverNode : public rclcpp::Node {
 
             this->declare_parameter<std::string>("camera_name", "camera");
             this->declare_parameter<std::string>("camera_frame_id", "camera_rig");
+            this->declare_parameter<std::string>("camera_path", "unused");
             this->declare_parameter<int>("camera_index", 1);
             this->declare_parameter<double>("publish_rate", 60); //hz
             this->declare_parameter<bool>("publish_as_gray", false);
@@ -29,6 +30,7 @@ class CameraDriverNode : public rclcpp::Node {
 
             camera_name = this->get_parameter("camera_name").as_string();
             camera_frame_id = this->get_parameter("camera_frame_id").as_string();
+            camera_path = this->get_parameter("camera_path").as_string();
             camera_index = this->get_parameter("camera_index").as_int();
             publish_rate = this->get_parameter("publish_rate").as_double();
             publish_as_gray = this->get_parameter("publish_as_gray").as_bool();
@@ -38,7 +40,14 @@ class CameraDriverNode : public rclcpp::Node {
             resolution = this->get_parameter("resolution").as_integer_array();
             image_fps = this->get_parameter("image_fps").as_int();
 
-            camera = CameraManager(camera_index, cv::CAP_V4L2);
+            if(camera_path == "unused"){
+                RCLCPP_INFO(this->get_logger(), std::string("Opening Camera on: " + std::to_string(camera_index)).c_str());
+                camera = CameraManager(camera_index, cv::CAP_V4L2);
+            }
+            else{
+                RCLCPP_INFO(this->get_logger(), std::string("Opening Camera on: " + camera_path).c_str());
+                camera = CameraManager(camera_path, cv::CAP_V4L2);
+            }
 
             D = this->get_parameter("distortion_coeffs").as_double_array();
 
@@ -223,6 +232,7 @@ class CameraDriverNode : public rclcpp::Node {
 
         std::string camera_name;
         std::string camera_frame_id;
+        std::string camera_path;
         int camera_index;
         double publish_rate;
         bool publish_as_gray;

@@ -22,13 +22,23 @@ class CameraManager{
             this->name = "camera_" + index;
             // config();
         }
-        
+
         CameraManager(int index, cv::VideoCaptureAPIs type) : cap(index, type) {
             this->index = index;
             this->name = "camera_" + index;
             // config();
         }
 
+        CameraManager(std::string path) : cap(path){
+            this->path = path;
+            this->name = "camera_" + path;
+        }
+        
+        CameraManager(std::string path, cv::VideoCaptureAPIs type) : cap(path, type){
+            this->path = path;
+            this->name = "camera_" + path;
+        }
+        
         void config(){   
             config(1280, 960, 50);
         }
@@ -46,7 +56,6 @@ class CameraManager{
 
         bool setProperty(cv::VideoCaptureProperties property, double value, bool print){
             cap.set(property, value);
-
             return getProperty(property, print) == value;
         }
 
@@ -129,6 +138,7 @@ class CameraManager{
     private:
         cv::VideoCapture cap;
         int index;
+        std::string path;
         std::string name;
 
         double framerate = 0;
