@@ -45,7 +45,8 @@ CMD ["/bin/bash"]
 # Switch Users
 RUN useradd -ms /bin/bash dev \
     && echo "dev:nickreed" | chpasswd \
-    && usermod -aG sudo dev
+    && usermod -aG sudo dev \
+    && echo "dev ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER dev
 
