@@ -2,12 +2,12 @@ https://github.com/ros2/ros1_bridge/blob/master/doc/index.rst
 
 building ros2:
 . /opt/ros/foxy/setup.bash
-cd into your ros2_ws
+cd into your ros2_msgs_ws
 colcon build 
 
 building ros1:
 . /opt/ros/noetic/setup.bash
-cd into your ros1_ws
+cd into your ros1_msgs_ws
 catkin_make_isolated --install
 
 building the bridge:
@@ -16,8 +16,8 @@ git clone -b foxy https://github.com/ros2/ros1_bridge.git
 
 . /opt/ros/noetic/setup.bash
 . /opt/ros/foxy/setup.bash
-. ros1_ws/install_isolated/setup.bash
-. ros2_ws/install/local_setup.bash
+. ~/ros1_msgs_ws/install_isolated/setup.bash
+. ~/ros2_msgs_ws/install/local_setup.bash
 
 cd into bridge_ws
 colcon build --packages-select ros1_bridge --cmake-force-configure
