@@ -16,7 +16,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(OpenCV REQUIRED)
-find_package(camera_driver_srvs REQUIRED)
+# find_package(camera_driver_srvs REQUIRED)
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -31,7 +31,7 @@ include_directories(
 # find_package(<dependency> REQUIRED)
 
 add_executable(camera_driver_node src/Main.cpp)
-ament_target_dependencies(camera_driver_node rclcpp std_msgs cv_bridge camera_driver_srvs)
+ament_target_dependencies(camera_driver_node rclcpp std_msgs cv_bridge )
 
 target_link_libraries(camera_driver_node ${OpenCV_LIBS})
 
