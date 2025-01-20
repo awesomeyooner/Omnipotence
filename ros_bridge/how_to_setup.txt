@@ -16,8 +16,8 @@ git clone -b foxy https://github.com/ros2/ros1_bridge.git
 
 . /opt/ros/noetic/setup.bash
 . /opt/ros/foxy/setup.bash
-. ~/ros1_msgs_ws/install_isolated/setup.bash
-. ~/ros2_msgs_ws/install/local_setup.bash
+. ../ros1_msgs_ws/install_isolated/setup.bash
+. ../ros2_msgs_ws/install/local_setup.bash
 
 cd into bridge_ws
 colcon build --packages-select ros1_bridge --cmake-force-configure

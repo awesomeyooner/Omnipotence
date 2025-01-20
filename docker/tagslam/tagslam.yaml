@@ -53,7 +53,7 @@ bodies:
      type: simple
      tags:
      - id: 0
-       size: 0.12
+       size: 0.2166
        pose:
          position:
            x: 0
@@ -72,6 +72,15 @@ bodies:
            y: 1.0e-05
            z: 1.0e-05
  - rig:
-     is_static: false
-     type: simple
-     odom_frame_id: body_rig
+    is_static: false
+    type: simple
+    #  odom_frame_id: body_rig
+    T_body_odom:
+      position:
+        x:  0
+        y:  0
+        z:  0
+      rotation:
+        x:  0
+        y:  0
+        z:  0

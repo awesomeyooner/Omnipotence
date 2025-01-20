@@ -5,5 +5,5 @@ cam0:
   distortion_coeffs: [0.03080258043, -0.06523055331, 0.0003025805212, -4.177400726e-05, 0.06055868742] # k1, k2, p1, p2, k3
   resolution: [1280, 960]
   rostopic: /camera/image_rect
-  tagtopic: /camera/detections
+  tagtopic: /camera/detections/translated
   rig_body: rig
