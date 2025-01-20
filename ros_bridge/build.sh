@@ -13,8 +13,10 @@ cd ros1_msgs_ws && catkin_make_isolated --install
 cd ..
 
 echo "Setting ros1_bridge..."
-cd bridge_ws
+cd bridge_ws/src
 git clone -b foxy https://github.com/ros2/ros1_bridge.git
+
+cd ..
 
 echo "Building..."
 . /opt/ros/noetic/setup.bash

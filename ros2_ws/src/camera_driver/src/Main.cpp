@@ -14,7 +14,7 @@ class CameraDriverNode : public rclcpp::Node {
         CameraDriverNode() : Node("camera_driver_node"){
 
             this->declare_parameter<std::string>("camera_name", "camera");
-            this->declare_parameter<std::string>("camera_frame_id", "camera_frame");
+            this->declare_parameter<std::string>("camera_frame_id", "camera_rig");
             this->declare_parameter<int>("camera_index", 1);
             this->declare_parameter<double>("publish_rate", 60); //hz
             this->declare_parameter<bool>("publish_as_gray", false);

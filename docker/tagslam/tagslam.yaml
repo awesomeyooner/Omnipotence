@@ -75,12 +75,12 @@ bodies:
     is_static: false
     type: simple
     #  odom_frame_id: body_rig
-    T_body_odom:
-      position:
-        x:  0
-        y:  0
-        z:  0
-      rotation:
-        x:  0
-        y:  0
-        z:  0
+    # T_body_odom:
+    #   position:
+    #     x:  0
+    #     y:  0
+    #     z:  0
+    #   rotation:
+    #     x:  0
+    #     y:  0
+    #     z:  0

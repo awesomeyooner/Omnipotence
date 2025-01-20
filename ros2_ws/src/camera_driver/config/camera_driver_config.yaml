@@ -1,7 +1,7 @@
 camera_driver_node:
   ros__parameters:
     camera_name: "camera"
-    camera_frame_id: "camera_frame"
+    camera_frame_id: "camera_rig"
     camera_index: 0
     publish_rate: 60.0 #hz
     publish_as_gray: false
