@@ -4,10 +4,8 @@
 #include <sensor_msgs/msg/camera_info.hpp>
 #include <cv_bridge/cv_bridge.h>
 #include <string>
-// #include "camera_driver/srv/configure_camera.hpp"
-// #include "camera_driver/srv/reconfigure_defaults.hpp"
-#include "../../../install/camera_driver/include/camera_driver/camera_driver/srv/configure_camera.hpp"
-#include "../../../install/camera_driver/include/camera_driver/camera_driver/srv/reconfigure_defaults.hpp"
+#include <camera_driver_srvs/srv/configure_camera.hpp>
+#include <camera_driver_srvs/srv/reconfigure_defaults.hpp>
 #include "../include/camera_driver/cameramanager/CameraManager.hpp"
 
 class CameraDriverNode : public rclcpp::Node {
@@ -81,12 +79,12 @@ class CameraDriverNode : public rclcpp::Node {
                 std::bind(&CameraDriverNode::publish_data, this)
             );
 
-            config_service = this->create_service<camera_driver::srv::ConfigureCamera>(
+            config_service = this->create_service<camera_driver_srvs::srv::ConfigureCamera>(
                 camera_name + "/configure_camera",
                 std::bind(&CameraDriverNode::handle_config, this, std::placeholders::_1, std::placeholders::_2)
             );
 
-            reconfig_service = this->create_service<camera_driver::srv::ReconfigureDefaults>(
+            reconfig_service = this->create_service<camera_driver_srvs::srv::ReconfigureDefaults>(
                 camera_name + "/reconfigure_defaults",
                 std::bind(&CameraDriverNode::handle_reconfig, this, std::placeholders::_1, std::placeholders::_2)
             );
@@ -150,8 +148,8 @@ class CameraDriverNode : public rclcpp::Node {
             return all_successful;
         }
 
-        void handle_reconfig(const std::shared_ptr<camera_driver::srv::ReconfigureDefaults::Request> request, 
-            std::shared_ptr<camera_driver::srv::ReconfigureDefaults::Response> response){
+        void handle_reconfig(const std::shared_ptr<camera_driver_srvs::srv::ReconfigureDefaults::Request> request, 
+            std::shared_ptr<camera_driver_srvs::srv::ReconfigureDefaults::Response> response){
 
             response->status = config_camera(
                 resolution[0],
@@ -162,8 +160,8 @@ class CameraDriverNode : public rclcpp::Node {
             );
         }
 
-        void handle_config(const std::shared_ptr<camera_driver::srv::ConfigureCamera::Request> request, 
-            std::shared_ptr<camera_driver::srv::ConfigureCamera::Response> response){
+        void handle_config(const std::shared_ptr<camera_driver_srvs::srv::ConfigureCamera::Request> request, 
+            std::shared_ptr<camera_driver_srvs::srv::ConfigureCamera::Response> response){
 
             response->status = config_camera(
                 request->width,
@@ -220,8 +218,8 @@ class CameraDriverNode : public rclcpp::Node {
         rclcpp::Publisher<sensor_msgs::msg::CameraInfo>::SharedPtr camera_info_publisher;
         rclcpp::TimerBase::SharedPtr timer;
 
-        rclcpp::Service<camera_driver::srv::ConfigureCamera>::SharedPtr config_service;
-        rclcpp::Service<camera_driver::srv::ReconfigureDefaults>::SharedPtr reconfig_service;
+        rclcpp::Service<camera_driver_srvs::srv::ConfigureCamera>::SharedPtr config_service;
+        rclcpp::Service<camera_driver_srvs::srv::ReconfigureDefaults>::SharedPtr reconfig_service;
 
         std::string camera_name;
         std::string camera_frame_id;
@@ -246,4 +244,8 @@ int main(int argc, char **argv){
     rclcpp::shutdown();
     return 0;
 }
+
+// int main(int argc, char **argv){
+//     return 0;
+// }
 

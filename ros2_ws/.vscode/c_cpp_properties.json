@@ -4,7 +4,6 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/build/camera_driver/rosidl_generator_cpp/camera_driver/srv/**",
                 "/opt/ros/humble/include/rclcpp/rclcpp",
                 "/opt/ros/humble/include/rclcpp",
                 "/opt/ros/humble/include/**",
