@@ -64,8 +64,10 @@ RUN source /opt/ros/noetic/setup.bash && \
     catkin config -DCMAKE_BUILD_TYPE=RelWithDebInfo && \
     catkin build
 
-COPY ../tagslam /home/dev/
-
 # Finally, change back to home
 WORKDIR /home/dev
+
+RUN echo "source /opt/ros/noetic/setup.bash" >> /home/dev/.bashrc
+RUN echo "export ROS_HOSTNAME=localhost" >> /home/dev/.bashrc 
+RUN echo "export ROS_MASTER_URI=http://localhost:11311" >> /home/dev/.bashrc
 

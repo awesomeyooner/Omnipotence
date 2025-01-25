@@ -41,4 +41,8 @@ RUN cd Omnipotence/ros_bridge && sudo chmod +x build.sh && ./build.sh
 
 WORKDIR /home/dev/Omnipotence/ros_bridge/bridge_ws
 
+RUN echo "source /opt/ros/foxy/setup.bash" >> /home/dev/.bashrc
+RUN echo "export ROS_HOSTNAME=localhost" >> /home/dev/.bashrc 
+RUN echo "export ROS_MASTER_URI=http://localhost:11311" >> /home/dev/.bashrc
+
 ENTRYPOINT [ "source install/setup.bash" ]

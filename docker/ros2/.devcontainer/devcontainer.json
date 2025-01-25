@@ -4,14 +4,14 @@
     "build": {
         "dockerfile": "Dockerfile", // Path to your Dockerfilez
         "options": [
-            "-t=omnipotence_dc:test"
+            "-t=omnipotence_dc:humble"
         ]
     },
     "workspaceFolder": "/home/dev",
     "remoteUser": "dev",
-    "mounts": [
-        "source=${localWorkspaceFolder}/hello,target=/home/dev/hello,type=bind,consistency=cached"
-    ],
+    // "mounts": [
+    //     "source=${localWorkspaceFolder}/hello,target=/home/dev/hello,type=bind,consistency=cached"
+    // ],
     "runArgs": [
         "--env=DISPLAY=${localEnv:DISPLAY}",
         "--env", "LIBGL_ALWAYS_INDIRECT=0",

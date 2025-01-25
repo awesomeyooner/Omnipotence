@@ -6,4 +6,4 @@ cam0:
   resolution: [1280, 960]
   rostopic: /camera/image_rect
   tagtopic: /camera/detections/translated
-  rig_body: rig
+  rig_body: camera_rig
