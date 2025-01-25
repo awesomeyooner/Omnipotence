@@ -1,0 +1,25 @@
+{
+    "name": "Omnipotence",
+    // "image": "omnipotence:noetic",
+    "build": {
+        "dockerfile": "Dockerfile", // Path to your Dockerfilez
+        "options": [
+            "-t=omnipotence_dc:test"
+        ]
+    },
+    "workspaceFolder": "/home/dev",
+    "remoteUser": "dev",
+    // "mounts": [
+    //     "source=${localWorkspaceFolder}/hello,target=/home/dev/hello,type=bind,consistency=cached"
+    // ],
+    "runArgs": [
+        "--env=DISPLAY=${localEnv:DISPLAY}",
+        "--env", "LIBGL_ALWAYS_INDIRECT=0",
+        "--volume", "/tmp/.X11-unix:/tmp/.X11-unix",
+        "--volume", "/dev/dri:/dev/dri",
+        "--net=host",
+        "--hostname", "container",
+        "--name", "omnipotence_humble",
+        "--rm"
+    ]
+}

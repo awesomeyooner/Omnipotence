@@ -1,0 +1,10 @@
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[user]
+	name = Susan Yoon
+	email = awesomeyooner@gmail.com
+[credential]
+	helper = "!f() { /home/dev/.vscode-server/bin/cd4ee3b1c348a13bafd8f9ad8060705f6d4b9cba/node /tmp/vscode-remote-containers-e89a4192-349b-4f60-9eb5-8f6005983eb0.js git-credential-helper $*; }; f"
