@@ -4,13 +4,13 @@
     "build": {
         "dockerfile": "Dockerfile", // Path to your Dockerfilez
         "options": [
-            "-t=omnipotence_dc:test"
+            "-t=kalibr:noetic"
         ]
     },
     "workspaceFolder": "/home/dev",
     "remoteUser": "dev",
     "mounts": [
-        "source=${localWorkspaceFolder}/hello,target=/home/dev/hello,type=bind,consistency=cached"
+        "source=${localWorkspaceFolder}/config,target=/home/dev/config,type=bind,consistency=cached"
     ],
     "runArgs": [
         "--env=DISPLAY=${localEnv:DISPLAY}",
@@ -19,7 +19,7 @@
         "--volume", "/dev/dri:/dev/dri",
         "--network=host",
         "--hostname", "container",
-        "--name", "omnipotence_humble",
+        "--name", "kalibr_noetic",
         "--rm"
     ]
 }
