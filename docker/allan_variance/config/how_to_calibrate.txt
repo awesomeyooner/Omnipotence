@@ -1,3 +1,10 @@
+record a rosbag of your topics (or just all but that kinda takes a lot of data)
+
+--all records all topics
+
+rosbag record -a --output-name=output.bag
+rosbag record --output-name=output.bag /oak/left/image_raw /oak/right/image_raw /oak/imu/data
+
 place your imu down and record data for like 3 ish hours (hella long but make sure to only record the imu or else your storage is gonna boom)
 
 cook (filter) the rosbag with
