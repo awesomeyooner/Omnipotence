@@ -1,7 +1,17 @@
 place your imu down and record data for like 3 ish hours (hella long but make sure to only record the imu or else your storage is gonna boom)
 
 cook (filter) the rosbag with
-rosrun allan_variance_ros cookbag.py --input original_rosbag --output cooked_rosbag
+rosrun allan_variance_ros cookbag.py --input original.bag --output cooked.bag
 
 run the calibration
 rosrun allan_variance_ros allan_variance [path_to_folder_containing_bag] [path_to_config_file]
+
+make sure theres only one bag in the folder and also make sure youre like not inside of the folder of the bag itself
+rosrun allan_variance_ros allan_variance config config/oakd_imu.yaml
+
+then analyze it with:
+rosrun allan_variance_ros analysis.py --data allan_variance.csv --config config/realsense_d425i.yaml
+
+this will give you the actual imu.yaml with all of the allan variance parameters. 
+If it gives error like Infinity or NaN, then something is wrong
+with the data, usually it's cuz your bag is too short

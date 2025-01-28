@@ -1,5 +1,4 @@
 imu_topic: "/oak/imu/data"    # IMU ROS topic
-imu_name: "oakd_imu"        # Name for your IMU
-max_time: 3600            # Maximum time for analysis in seconds (1 hour)
-freq: 100.0               # IMU data frequency in Hz
-imu_type: "MEMS"          # Type of IMU (MEMS, Fiber Optic, etc.)
+imu_rate: 400        # Rate of IMU
+sequence_time: 14000            # Maximum time for analysis in seconds (1 hour)
+measure_rate: 100         # Rate at which IMU data is subsampled
