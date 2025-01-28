@@ -1,0 +1,46 @@
+========Noise density to covariances========
+
+covariance = (noise density)^2 * sample rate
+
+(for oak d the measurements are sampled at 400hz, so sample rate = 400)
+
+this works for both accel and gyro
+
+so 
+
+accel cov = (accel noise density)^2 * sample rate
+
+gyro cov = (gyro noise density)^2 * sample rate
+
+
+==========Random Walk to Process Noise (random walk is like drift)=======
+
+process noise = (random walk)^2
+
+since we only know random walk for gyro and accel, that means we can only get the process noise for 
+vroll, vpitch, vyaw, and ax, ay, az 
+
+==========Noise Density to Process Noise========
+
+process noise = (noise density)^2
+
+we know noise density for both accel and gyro, but these are for each  of the integrals, so velocity for accel and orientation for gyro.
+roll, pitch, yaw and vx, vy, vz
+
+
+
+======SUMMARY======
+
+Accel Covariance = (accel noise density)^2 * sample rate
+Gyro Covariance = (gyro noise density)^2 * sample rate
+
+Accel Process Noise = (accel random walk)^2
+Gyro Process Noise = (gyro random walk)^2
+
+Linear Velocity Process Noise = (accel noise density)^2
+Orientation Process Noise = (gyro noise density)^2
+
+Linear Position Process Noise is hard to find, so just tune it manually (use like 0.03, between 0.01 and 0.05)
+
+
+

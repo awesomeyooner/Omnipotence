@@ -23,7 +23,7 @@ rosrun kalibr kalibr_calibrate_cameras --bag multicam_data.bag \
 rosrun kalibr kalibr_calibrate_cameras --bag first_run.bag \
   --models pinhole-radtan pinhole-radtan \
   --topics /oak/left/image_raw /oak/right/image_raw \
-  --target april_6x6_80x80cm.yaml
+  --target aprilgrid.yaml
 
 
 ======IMU=====
@@ -36,7 +36,7 @@ rosrun kalibr kalibr_calibrate_imu_camera \
   --timeoffset-padding 0.05
 
 rosrun kalibr kalibr_calibrate_imu_camera \
-	--target april_6x6_80x80cm.yaml \
+	--target aprilgrid.yaml \
 	--imu imu.yaml \
 	--imu-models calibrated \
 	--cam camchain-first_run.yaml \
