@@ -1,0 +1,7 @@
+place your imu down and record data for like 3 ish hours (hella long but make sure to only record the imu or else your storage is gonna boom)
+
+cook (filter) the rosbag with
+rosrun allan_variance_ros cookbag.py --input original_rosbag --output cooked_rosbag
+
+run the calibration
+rosrun allan_variance_ros allan_variance [path_to_folder_containing_bag] [path_to_config_file]

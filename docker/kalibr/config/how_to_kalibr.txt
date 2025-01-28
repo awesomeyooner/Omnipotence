@@ -1,0 +1,51 @@
+record a rosbag of your topics (or just all but that kinda takes a lot of data)
+
+--all records all topics
+
+rosbag record -a --output-name=output.bag
+rosbag record --output-name=output.bag /oak/left/image_raw /oak/right/image_raw /oak/imu/data
+
+if you wanna play it then run
+
+rosbag play <your_file.bag>
+
+to list all the parameters for a kalibr executable, just run rosrun kalibr <executable> --help
+
+rosrun kalibr kalibr_calibrate_cameras --help
+rosrun kalibr kalibr_calibrate_imu_camera --help
+
+=====Multicamera===== (this can also be used with a single camera, just only specify one image topic)
+rosrun kalibr kalibr_calibrate_cameras --bag multicam_data.bag \
+  --models pinhole-radtan pinhole-radtan \
+  --topics /camera_0/image_raw /camera_1/image_raw \
+  --target checkerboard.yaml
+
+rosrun kalibr kalibr_calibrate_cameras --bag first_run.bag \
+  --models pinhole-radtan pinhole-radtan \
+  --topics /oak/left/image_raw /oak/right/image_raw \
+  --target april_6x6_80x80cm.yaml
+
+
+======IMU=====
+rosrun kalibr kalibr_calibrate_imu_camera \
+	--target april_6x6.yaml \
+	--imu imu_adis16448.yaml \
+	--imu-models calibrated \
+	--cam cam_april-camchain.yaml \
+	--bag imu_april.bag \
+  --timeoffset-padding 0.05
+
+rosrun kalibr kalibr_calibrate_imu_camera \
+	--target april_6x6_80x80cm.yaml \
+	--imu imu.yaml \
+	--imu-models calibrated \
+	--cam camchain-first_run.yaml \
+	--bag first_run.bag \
+  --timeoffset-padding 0.05
+
+
+====Issues and Solutions=====
+If you get the issue like:
+[ERROR] [1738050268.119437]: Optimization failed!
+
+just try to increase the --timeoffset-padding (the default is 0.03)
