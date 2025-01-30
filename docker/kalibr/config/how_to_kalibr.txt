@@ -15,6 +15,9 @@ rosrun kalibr kalibr_calibrate_cameras --help
 rosrun kalibr kalibr_calibrate_imu_camera --help
 
 =====Multicamera===== (this can also be used with a single camera, just only specify one image topic)
+
+NOTE: this will not give k3 for radtan, but oftentimes k3 can just be set to 0 (pretty much as long as your camera isnt hella fisheye'y)
+
 rosrun kalibr kalibr_calibrate_cameras --bag multicam_data.bag \
   --models pinhole-radtan pinhole-radtan \
   --topics /camera_0/image_raw /camera_1/image_raw \
