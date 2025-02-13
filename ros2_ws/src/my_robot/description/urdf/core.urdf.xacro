@@ -11,7 +11,7 @@
   <xacro:include filename="$(find my_robot)/description/urdf/util/materials.xacro" />
 
   <!-- Import Robot Description -->
-  <xacro:include filename="$(find my_robot)/description/urdf/field.urdf.xacro" />
+  <xacro:include filename="$(find my_robot)/description/urdf/test.urdf.xacro" />
 
   <xacro:field prefix="$(arg prefix)" />
 

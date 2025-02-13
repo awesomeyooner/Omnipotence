@@ -31,12 +31,12 @@
       i_enable_sync: false
 
     imu:
-      i_acc_cov: 0.0
+      i_acc_cov: 0.00339068060357
       i_acc_freq: 400
       i_batch_report_threshold: 5
       i_enable_rotation: true
       i_get_base_device_timestamp: false
-      i_gyro_cov: 0.0
+      i_gyro_cov: 0.000165691976552
       i_gyro_freq: 400
       i_mag_cov: 0.0
       i_max_batch_reports: 10

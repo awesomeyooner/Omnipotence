@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="field" params="prefix">
+
+    <xacro:property name="width" value="17.5482493332"/>
+    <xacro:property name="height" value="8.0518"/>
+
+    <!-- World Link -->
+    <link name="${prefix}world_link"/>
+
+    <link name="${prefix}map"/>
+
+    <!-- Field Link -->
+    <link name="${prefix}base_link"/>
+
+    <joint name="${prefix}map_frame" type="fixed">
+        <parent link="${prefix}world_link"/>
+        <child link="${prefix}map"/>
+    </joint>
+
+    <joint name="${prefix}base_link_frame" type="fixed">
+        <parent link="${prefix}map"/>
+        <child link="${prefix}base_link"/>
+    </joint>
+
+      <!-- ==================================================================== -->
+
+  </xacro:macro>
+
+</robot>

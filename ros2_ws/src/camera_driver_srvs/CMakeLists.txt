@@ -5,6 +5,14 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_cpp>
+  $<INSTALL_INTERFACE:include>
+  include
+  ${OpenCV_INCLUDE_DIRS}
+)
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
